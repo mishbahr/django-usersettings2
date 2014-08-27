@@ -29,11 +29,6 @@ Features
 * TODO
 
 
-Documentation
--------------
-
-The full documentation is at https://django-usersettings2.readthedocs.org.
-
 Quickstart
 ----------
 
@@ -49,3 +44,9 @@ Quickstart
         'usersettings',
         ...
     )
+
+
+Documentation
+-------------
+
+The full documentation is at https://django-usersettings2.readthedocs.org.
