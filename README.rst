@@ -23,6 +23,12 @@ django-usersettings2
 
 A reusable app for django, provides the ability to configure site settings via the admin interface, rather than by editing settings.py
 
+Features
+--------
+
+* TODO
+
+
 Documentation
 -------------
 
@@ -31,15 +37,15 @@ The full documentation is at https://django-usersettings2.readthedocs.org.
 Quickstart
 ----------
 
-Install django-usersettings2::
+1. Install django-usersettings::
 
     pip install django-usersettings2
 
-Then use it in a project::
 
-    import django-usersettings2
+2. Add `usersettings` to `INSTALLED_APPS`::
 
-Features
---------
-
-* TODO
+    INSTALLED_APPS = (
+        ...
+        'usersettings',
+        ...
+    )
