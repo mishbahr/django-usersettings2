@@ -109,9 +109,7 @@ Or you can add `usersettings.cms_toolbar.UserSettingsToolbar` to `CMS_TOOLBARS` 
 
     CMS_TOOLBARS = [
         # CMS Toolbars
-        'cms.cms_toolbar.PlaceholderToolbar',
-        'cms.cms_toolbar.BasicToolbar',
-        'cms.cms_toolbar.PageToolbar',
+        ...
 
         # django-usersettings2 Toolbar
        'usersettings.cms_toolbar.UserSettingsToolbar',
