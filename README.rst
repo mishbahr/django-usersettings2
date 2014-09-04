@@ -28,13 +28,16 @@ A reusable app for django, provides the ability to configure site settings via t
 Why would you use usersettings?
 -------------------------------
 
+The project structure is heavily inspired by  django 'sites` app, with a one-to-one relationship to site object,
+use it to store additional information for your Django-powered sites.
+
 It’s best explained through examples.
 
 
 Example Usage
 -------------
 
-* TODO
+    *TODO
 
 Dependencies
 ------------
