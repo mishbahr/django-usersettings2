@@ -21,41 +21,35 @@ django-usersettings2
   :target: https://coveralls.io/r/mishbahr/django-usersettings2?branch=master
 
 
-A reusable app for django, provides the ability to configure site settings via the admin interface,
-rather than by editing settings.py
+A reusable app for django, provides the ability to configure site settings via the admin interface, rather than by editing settings.py
 
 
 Why would you use usersettings?
 -------------------------------
 
-This project is the missing extension to the site framework, use it to store additional information
-for your Django-powered sites. The project structure is heavily inspired by  django 'sites` app,
-with a one-to-one relationship to the site model, It’s best explained through examples.
+This project is the missing extension to the Django site framework, use it to store additional information for your Django-powered sites. The project structure is heavily inspired by  django 'sites` app, with a one-to-one relationship to the site model.
+
+It’s best explained through examples.
 
 
 Example Usage
 -------------
 
-For example, suppose you’re developing a multi-site django project i.e. using single Django
-installation that powers more than one site and you need to differentiate between those sites in
-some way.
+For example, suppose you’re developing a multi-site django project i.e. using single Django installation that powers more than one site and you need to differentiate between those sites in some way.
 
-(e.g. Site Title, Physical Location, Contact Details ..etc)
+    (e.g. Site Title, Physical Location, Contact Details ..etc)
 
 Of course, you could hardcode the information in the templates and and use different templates
 for each site. Alternatively you could configure details in your `settings.py` for each site.
 
-A better solution would be to use `django-usersettings2`. This project accomplishes several
-things quite nicely:
+A better solution would be to use `django-usersettings2`. This project accomplishes several things quite nicely:
 
-    * It lets the site producers edit all settings – for multiple sites – in a single interface (the Django admin).
-    * It lets the site developers use the same Django views/templates for multiple sites.
+* It lets the site producers edit all settings – for multiple sites – in a single interface (the Django admin).
+* It lets the site developers use the same Django views/templates for multiple sites.
 
-To get started, create a class that inherits from `usersettings.models.UserSettings`. Make sure to
-import the `UserSettings` model. Your class should live in one of your apps’ models.py (or module).
+To get started, create a class that inherits from `usersettings.models.UserSettings`. Make sure to import the `UserSettings` model. Your class should live in one of your apps’ models.py (or module).
 
-Since `UserSettings` model inherit from `django.db.models.Model`, you are free to add any field
-you want.
+Since `UserSettings` model inherit from `django.db.models.Model`, you are free to add any field you want.
 
 Here's a simple example::
 
@@ -76,15 +70,11 @@ Here's a simple example::
             verbose_name_plural = 'Site Settings'
 
 If you followed the Django tutorial, this shouldn’t look too new to you.
-The only difference to normal models is that you subclass `usersettings.models.UserSettings` rather
-than `django.db.models.base.Model`.
+The only difference to normal models is that you subclass `usersettings.models.UserSettings` rather than `django.db.models.base.Model`.
 
-Hooking the `usersettings` to the admin site::
+**Hooking the `usersettings` to the admin site:**
 
-To make your new model editable in the admin interface, you must first create an admin class that
-subclasses `usersettings.admin.SettingsAdmin`. Continuing with the example model above,
-here’s a simple corresponding `SiteSettingsAdmin` class::
-
+To make your new model editable in the admin interface, you must first create an admin class that subclasses `usersettings.admin.SettingsAdmin`. Continuing with the example model above, here’s a simple corresponding `SiteSettingsAdmin` class::
 
     from django.contrib import admin
     from django.utils.translation import ugettext_lazy as _
@@ -98,10 +88,7 @@ here’s a simple corresponding `SiteSettingsAdmin` class::
 
         fieldsets = (
             (_('Site Title / Tag Line'), {
-                'description': 'Enter a Site Title and Tag Line to appear '
-                               'on the front of your site. '
-                               'Please note, your Site Title and Tag Line\'s '
-                               'appearance will be dependent on your template.',
+                'description': '...',
                 'fields': ('site_title', 'tag_line',)
             }),
             ...
@@ -111,7 +98,6 @@ here’s a simple corresponding `SiteSettingsAdmin` class::
 
     admin.site.register(SiteSettings, SiteSettingsAdmin)
 
-
 Since `SettingsAdmin` inherits from ModelAdmin, you’ll be able to use the normal
 set of Django ModelAdmin properties, as appropriate to your circumstance.
 
@@ -120,12 +106,9 @@ Once you’ve registered your admin class, a new model will appear in the top-le
 DJANGO-CMS >= 3.0 Toolbar
 -------------------------
 django-usersettings2 works seamlessly with `django-cms>=3.0` with a custom toolbar.
-This allows site editor to add/modify all usersettings in the frontend editing mode of django CMS
-and provide your users with a streamlined editing experience.
+This allows site editor to add/modify all usersettings in the frontend editing mode of django CMS and provide your users with a streamlined editing experience.
 
-`UserSettingsToolbar` will be automatically loaded as long as `CMS_TOOLBARS` is not set (or set to None).
-
-Or you can add `usersettings.cms_toolbar.UserSettingsToolbar` to `CMS_TOOLBARS` settings::
+`UserSettingsToolbar` will be automatically loaded as long as `CMS_TOOLBARS` is not set (or set to None). Or you can add `usersettings.cms_toolbar.UserSettingsToolbar` to `CMS_TOOLBARS` settings::
 
     CMS_TOOLBARS = [
         # CMS Toolbars
@@ -142,7 +125,7 @@ Dependencies
 django-usersettings2 requires The `“sites” <https://docs.djangoproject.com/en/dev/ref/contrib/sites/>`_
 framework to be installed.
 
-To enable the sites framework, follow these steps::
+To enable the sites framework, follow these steps:
 
 1. Add `django.contrib.sites` to your INSTALLED_APPS setting::
 
@@ -174,15 +157,13 @@ Install
         ...
     )
 
-4. Specify the custom `UserSettings` model as the default usersettings model for your project using
-the `usersettings_model` setting in your settings.py (required)::
+4. Specify the custom `UserSettings` model as the default usersettings model for your project using the `usersettings_model` setting in your settings.py (required)::
 
     USERSETTINGS_MODEL='config.SiteSettings'
 
 5. Add `usersettings.middleware.CurrentUserSettingsMiddleware` to MIDDLEWARE_CLASSES (optional).
 
-The middleware sets the `usersettings` attribute on every request object, so you can use
-request.usersettings to get the current usersettings::
+The middleware sets the `usersettings` attribute on every request object, so you can use request.usersettings to get the current usersettings::
 
     MIDDLEWARE_CLASSES=(
         ...
