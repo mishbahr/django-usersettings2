@@ -40,7 +40,7 @@ For example, suppose you’re developing a multi-site django project i.e. using 
 installation that powers more than one site and you need to differentiate between those sites in
 some way.
 
-    (e.g. Site Title, Physical Location, Contact Details ..etc)
+(e.g. Site Title, Physical Location, Contact Details ..etc)
 
 Of course, you could hardcode the information in the templates and and use different templates
 for each site. Alternatively you could configure details in your `settings.py` for each site.
@@ -48,8 +48,7 @@ for each site. Alternatively you could configure details in your `settings.py` f
 A better solution would be to use `django-usersettings2`. This project accomplishes several
 things quite nicely:
 
-    * It lets the site producers edit all settings – for multiple sites – in a single
-    interface (the Django admin).
+    * It lets the site producers edit all settings – for multiple sites – in a single interface (the Django admin).
     * It lets the site developers use the same Django views/templates for multiple sites.
 
 To get started, create a class that inherits from `usersettings.models.UserSettings`. Make sure to
