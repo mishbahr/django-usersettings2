@@ -119,29 +119,6 @@ This allows a site editor to add/modify all usersettings in the frontend editing
     ]
 
 
-Dependencies
-------------
-
-django-usersettings2 requires The `“sites” <https://docs.djangoproject.com/en/dev/ref/contrib/sites/>`_
-framework to be installed.
-
-To enable the sites framework, follow these steps:
-
-1. Add `django.contrib.sites` to your ``INSTALLED_APPS`` setting::
-
-    INSTALLED_APPS = (
-        ...
-        'django.contrib.sites'
-        ...
-    )
-
-2. Define a ``SITE_ID`` setting::
-
-    SITE_ID = 1
-
-3. Run migrate.
-
-
 Install
 -------
 
@@ -179,6 +156,31 @@ The middleware sets the ``usersettings`` attribute on every request object, so y
         'usersettings.context_processors.usersettings',
         ...
     )
+ 
+ 
+Dependencies
+------------
+
+django-usersettings2 requires The `“sites” <https://docs.djangoproject.com/en/dev/ref/contrib/sites/>`_
+framework to be installed.
+
+To enable the sites framework, follow these steps:
+
+1. Add `django.contrib.sites` to your ``INSTALLED_APPS`` setting::
+
+    INSTALLED_APPS = (
+        ...
+        'django.contrib.sites'
+        ...
+    )
+
+2. Define a ``SITE_ID`` setting::
+
+    SITE_ID = 1
+
+3. Run migrate.
+
+
 
 Documentation
 -------------
