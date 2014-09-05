@@ -1,0 +1,13 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+	<meta charset="UTF-8">
+	<title>{{ usersettings.site_title }}</title>
+</head>
+<body>
+	<h1>{{ usersettings.site_title }}</h1>
+	{% if usersettings.tag_line %}
+		<p class="lead">{{ usersettings.tag_line }}</p>
+	{% endif %}
+</body>
+</html>
