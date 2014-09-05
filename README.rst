@@ -148,11 +148,9 @@ If for any reason you want to force a database query, you can tell Django to cle
 
     # First call; current usersettings fetched from database.
     current_usersetting = UserSettings.objects.get_current()
-    # ...
 
     # Second call; current usersettings fetched from cache.
     current_usersetting = UserSettings.objects.get_current()
-    # ...
 
     # Force a database query for the third call.
     UserSettings.objects.clear_cache()
