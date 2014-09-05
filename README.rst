@@ -27,7 +27,7 @@ A reusable app for django, provides the ability to configure site settings via t
 Why would you use usersettings?
 -------------------------------
 
-This project is the missing extension to the Django site framework, use it to store additional information for your Django-powered sites. The project structure is heavily inspired by  django 'sites` app, with a one-to-one relationship to the site model.
+This project is the missing extension to the Django “sites” framework, use it to store additional information for your Django-powered sites. The project structure is heavily inspired by  django 'sites' app, with a ``one-to-one`` relationship to the ``Site`` model.
 
 It’s best explained through examples.
 
@@ -37,9 +37,9 @@ Example Usage
 
 For example, suppose you’re developing a multi-site django project i.e. using single Django installation that powers more than one site and you need to differentiate between those sites in some way.
 
-(e.g. Site Title, Physical Location, Contact Details ..etc)
+(e.g. Site Title, Physical Location, Contact Details... etc)
 
-Of course, you could hardcode the information in the templates and and use different templates
+Of course, you could hardcode the information in the templates and use different templates
 for each site. Alternatively you could configure details in your `settings.py` for each site.
 
 A better solution would be to use ``django-usersettings2``. This project accomplishes several things quite nicely:
@@ -106,9 +106,9 @@ Once you’ve registered your admin class, a new model will appear in the top-le
 DJANGO-CMS >= 3.0 Toolbar
 -------------------------
 django-usersettings2 works seamlessly with ``django-cms>=3.0`` with a custom toolbar.
-This allows site editor to add/modify all usersettings in the frontend editing mode of django CMS and provide your users with a streamlined editing experience.
+This allows a site editor to add/modify all usersettings in the frontend editing mode of django CMS and provide your users with a streamlined editing experience.
 
-``UserSettingsToolbar`` will be automatically loaded as long as ``CMS_TOOLBARS`` is not set (or set to None). Or you can add ``usersettings.cms_toolbar.UserSettingsToolbar`` to ``CMS_TOOLBARS`` settings::
+``UserSettingsToolbar`` will be automatically loaded as long as the ``CMS_TOOLBARS`` is not set (or set to None). Or you can add ``usersettings.cms_toolbar.UserSettingsToolbar`` to ``CMS_TOOLBARS`` settings::
 
     CMS_TOOLBARS = [
         # CMS Toolbars
