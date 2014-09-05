@@ -27,7 +27,7 @@ A reusable app for django, provides the ability to configure site settings via t
 Why would you use usersettings?
 -------------------------------
 
-This project is the missing extension to the Django “sites” framework, use it to store additional information for your Django-powered sites. The project structure is heavily inspired by  django 'sites' app, with a ``one-to-one`` relationship to the ``Site`` model.
+This project is the missing extension to the Django “sites” framework, use it to store additional information for your Django-powered sites. The project structure is heavily inspired by  django ``sites`` app, with a ``one-to-one`` relationship to the ``Site`` model.
 
 It’s best explained through examples.
 
