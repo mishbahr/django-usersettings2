@@ -2,10 +2,14 @@
 from django.db import models
 from django.conf import settings
 from django.db.models.signals import pre_save, pre_delete
-from django.utils.encoding import force_unicode
 from django.utils.translation import ugettext_lazy as _
 from django.core.exceptions import ImproperlyConfigured
 from django.contrib.sites.models import Site
+
+try:
+    from django.utils.encoding import force_text
+except ImportError:
+    from django.utils.encoding import force_unicode as force_text
 
 from .shortcuts import get_usersettings_model
 
@@ -58,7 +62,7 @@ class UserSettings(models.Model):
         abstract = True
 
     def __str__(self):
-        return force_unicode(self.site)
+        return force_text(self.site)
 
 
 def clear_site_cache(sender, **kwargs):
