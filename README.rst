@@ -147,16 +147,16 @@ But just like the Django sites framework, on the first request the current users
 If for any reason you want to force a database query, you can tell Django to clear the cache using ``UserSettings.objects.clear_cache()``::
 
     # First call; current usersettings fetched from database.
-    current_site = UserSettings.objects.get_current()
+    current_usersetting = UserSettings.objects.get_current()
     # ...
 
     # Second call; current usersettings fetched from cache.
-    current_site = UserSettings.objects.get_current()
+    current_usersetting = UserSettings.objects.get_current()
     # ...
 
     # Force a database query for the third call.
     UserSettings.objects.clear_cache()
-    current_site = UserSettings.objects.get_current()
+    current_usersetting = UserSettings.objects.get_current()
 
 DJANGO-CMS >= 3.0 Toolbar
 -------------------------
