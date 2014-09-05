@@ -72,7 +72,8 @@ Here's a simple example::
 If you followed the Django tutorial, this shouldn’t look too new to you.
 The only difference to normal models is that you subclass ``usersettings.models.UserSettings`` rather than ``django.db.models.base.Model``.
 
-**Hooking the 'usersettings' to the admin site:**
+Hooking the 'usersettings' to the admin site
+--------------------------------------------
 
 To make your new model editable in the admin interface, you must first create an admin class that subclasses ``usersettings.admin.SettingsAdmin``. Continuing with the example model above, here’s a simple corresponding ``SiteSettingsAdmin`` class::
 
@@ -98,10 +99,64 @@ To make your new model editable in the admin interface, you must first create an
 
     admin.site.register(SiteSettings, SiteSettingsAdmin)
 
+
 Since ``SettingsAdmin`` inherits from ModelAdmin, you’ll be able to use the normal
 set of Django ModelAdmin properties, as appropriate to your circumstance.
 
 Once you’ve registered your admin class, a new model will appear in the top-level admin list.
+
+
+Hooking into the current usersettings from views
+------------------------------------------------
+
+You can use the ``usersettings`` in your Django views to do particular things based on the ``usersettings`` for the site.
+
+Here’s an example of what the a view looks like::
+
+    from usersettings.shortcuts import get_current_usersettings
+
+    def home(request):
+        ...
+
+        current_usersetting = get_current_usersettings()
+
+        context = {
+            'title': current_usersetting.site_title,
+        }
+
+        ...
+
+Custom Middleware
+-----------------
+
+To avoid the repetitions of having to import ``current_usersetting`` for every view. Add ``usersettings.middleware.CurrentUserSettingsMiddleware`` to ``MIDDLEWARE_CLASSES``
+The middleware sets the ``usersettings`` attribute on every request object, so you can use ``request.usersettings`` to get the current usersettings::
+
+    MIDDLEWARE_CLASSES=(
+        ...
+        'usersettings.middleware.CurrentUserSettingsMiddleware',
+        ...
+    )
+
+Caching the current ``UserSettings`` object
+-------------------------------------------
+As the ``usersettings`` are stored in the database, each call to ``UserSettings.objects.get_current()`` could result in a database query.
+
+But just like the Django sites framework, on the first request the current usersettings is cached, and any subsequent call returns the cached data instead of hitting the database.
+
+If for any reason you want to force a database query, you can tell Django to clear the cache using ``UserSettings.objects.clear_cache()``::
+
+    # First call; current usersettings fetched from database.
+    current_site = UserSettings.objects.get_current()
+    # ...
+
+    # Second call; current usersettings fetched from cache.
+    current_site = UserSettings.objects.get_current()
+    # ...
+
+    # Force a database query for the third call.
+    UserSettings.objects.clear_cache()
+    current_site = UserSettings.objects.get_current()
 
 DJANGO-CMS >= 3.0 Toolbar
 -------------------------
@@ -146,7 +201,7 @@ The middleware sets the ``usersettings`` attribute on every request object, so y
         ...
         'usersettings.middleware.CurrentUserSettingsMiddleware',
         ...
-    ),
+    )
 
 6. The current usersettings are made available in the template context when your
 ``TEMPLATE_CONTEXT_PROCESSORS`` setting contains ``usersettings.context_processors.usersettings``::
@@ -156,8 +211,8 @@ The middleware sets the ``usersettings`` attribute on every request object, so y
         'usersettings.context_processors.usersettings',
         ...
     )
- 
- 
+
+
 Dependencies
 ------------
 
