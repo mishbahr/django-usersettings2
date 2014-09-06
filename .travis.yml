@@ -21,7 +21,7 @@ matrix:
 # command to install dependencies, e.g. pip install -r requirements.txt --use-mirrors
 install:
  - pip install $DJANGO --use-mirrors
- - pip instal wheel==0.24.0 --use-mirrors
+ - pip install wheel==0.24.0 --use-mirrors
  - pip install -r requirements-test.txt --use-mirrors
 
 # command to run tests using coverage, e.g. python setup.py test
