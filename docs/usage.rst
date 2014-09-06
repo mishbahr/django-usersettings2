@@ -127,20 +127,3 @@ If for any reason you want to force a database query, you can tell Django to cle
     UserSettings.objects.clear_cache()
     current_usersetting = UserSettings.objects.get_current()
 
-
-DJANGO-CMS >= 3.0 Toolbar
--------------------------
-
-django-usersettings2 works seamlessly with ``django-cms>=3.0`` with a custom toolbar.
-This allows a site editor to add/modify all usersettings in the frontend editing mode of django CMS and provide your users with a streamlined editing experience.
-
-``UserSettingsToolbar`` will be automatically loaded as long as the ``CMS_TOOLBARS`` is not set (or set to None). Or you can add ``usersettings.cms_toolbar.UserSettingsToolbar`` to ``CMS_TOOLBARS`` settings::
-
-    CMS_TOOLBARS = [
-        # CMS Toolbars
-        ...
-
-        # django-usersettings2 Toolbar
-       'usersettings.cms_toolbar.UserSettingsToolbar',
-    ]
-
