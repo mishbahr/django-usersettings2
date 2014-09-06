@@ -36,7 +36,3 @@ class TestUserSettingsShotcuts(TestCase):
     @override_settings(USERSETTINGS_MODEL='SiteSettings')
     def test_get_usersettings_model_fails_with_improper_settings(self):
         self.assertRaises(ImproperlyConfigured, get_usersettings_model)
-
-    @override_settings(USERSETTINGS_MODEL='missing.SiteSettings')
-    def test_get_usersettings_model_fails_with_missing_app(self):
-        self.assertRaises(ImproperlyConfigured, get_usersettings_model)

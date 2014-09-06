@@ -10,5 +10,4 @@ urlpatterns = patterns(
     url(r'^current-usersettings/$',
         TemplateView.as_view(template_name='example/current-usersettings.html'),
         name='current_usersettings'),
-    url(r'^', include('cms.urls')),
 )

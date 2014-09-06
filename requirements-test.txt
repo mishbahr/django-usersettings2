@@ -1,5 +1,4 @@
 -r requirements.txt
-django-cms>=3.0
 coverage
 coveralls
 mock>=1.0.1
