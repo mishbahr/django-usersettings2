@@ -22,9 +22,6 @@ try:
             'example',
         ],
         SITE_ID=1,
-        LANGUAGES = [
-            ('en-us', 'English'),
-        ],
         NOSE_ARGS=['-s'],
         USERSETTINGS_MODEL='example.SiteSettings',
         MIDDLEWARE_CLASSES=(
@@ -45,7 +42,8 @@ try:
         setup()
 
     from django_nose import NoseTestSuiteRunner
-except ImportError:
+except ImportError as e:
+    print e
     raise ImportError('To fix this error, run: pip install -r requirements-test.txt')
 
 
