@@ -42,9 +42,8 @@ try:
         setup()
 
     from django_nose import NoseTestSuiteRunner
-except ImportError as e:
-    print e
-    raise ImportError('To fix this error, run: pip install -r requirements-test.txt')
+except ImportError, e:
+    raise ImportError('%s : To fix this error, run: pip install -r requirements-test.txt' % str(e))
 
 
 def run_tests(*test_args):
