@@ -65,7 +65,7 @@ class UserSettings(models.Model):
         return force_text(self.site)
 
 
-def clear_site_cache(sender, **kwargs):
+def clear_usersettings_cache(sender, **kwargs):
     """
     Clears the cache (if primed) each time a ``UserSettings`` is saved or deleted
     """
@@ -75,5 +75,10 @@ def clear_site_cache(sender, **kwargs):
     except KeyError:
         pass
 
-pre_save.connect(clear_site_cache, sender=get_usersettings_model())
-pre_delete.connect(clear_site_cache, sender=get_usersettings_model())
+
+import django
+from distutils.version import LooseVersion
+
+if LooseVersion(django.get_version()) < LooseVersion('1.7'):
+    pre_save.connect(clear_usersettings_cache, sender=get_usersettings_model())
+    pre_delete.connect(clear_usersettings_cache, sender=get_usersettings_model())
