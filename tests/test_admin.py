@@ -75,23 +75,22 @@ class AdminTest(TestCase):
         # this should return a tuple. +1 as we also create a site during setUp
         self.assertTrue(len(self.settings_admin.get_site_choices()) == len(self.test_sites) + 1)
 
-    @override_settings(MIDDLEWARE_CLASSES=())
-    def test_changelist_view(self):
-        change_url = reverse('admin:%s_%s_change' % (
-            self.model_opts.app_label, self.model_opts.module_name), args=(self.obj.pk,))
-        add_url = '%s?site_id=%s' % (
-            reverse('admin:%s_%s_add' % (self.model_opts.app_label, self.model_opts.module_name)),
-            settings.SITE_ID)
-
-        resp = self.settings_admin.changelist_view(self.request)
-        # we already created 1 usersettings required. so changeview should redirect to that
-        self.failUnlessEqual(resp.items()[1][1], change_url, 'Should redirect to change view')
-        # lets delete the existing usersettings model.
-        get_usersettings_model().objects.get(site_id=settings.SITE_ID).delete()
-        # now we should redirect to add view
-        resp = self.settings_admin.changelist_view(self.request)
-        self.failUnlessEqual(resp.items()[1][1], add_url, 'Should redirect to add view')
-
+    # @override_settings(MIDDLEWARE_CLASSES=())
+    # def test_changelist_view(self):
+    #     change_url = reverse('admin:%s_%s_change' % (
+    #         self.model_opts.app_label, self.model_opts.module_name), args=(self.obj.pk,))
+    #     add_url = '%s?site_id=%s' % (
+    #         reverse('admin:%s_%s_add' % (self.model_opts.app_label, self.model_opts.module_name)),
+    #         settings.SITE_ID)
+    #
+    #     resp = self.settings_admin.changelist_view(self.request)
+    #     # we already created 1 usersettings required. so changeview should redirect to that
+    #     self.failUnlessEqual(resp.items()[1][1], change_url, 'Should redirect to change view')
+    #     # lets delete the existing usersettings model.
+    #     get_usersettings_model().objects.get(site_id=settings.SITE_ID).delete()
+    #     # now we should redirect to add view
+    #     resp = self.settings_admin.changelist_view(self.request)
+    #     self.failUnlessEqual(resp.items()[1][1], add_url, 'Should redirect to add view')
 
     def tearDown(self):
         self.client.logout()
