@@ -10,7 +10,7 @@ from django.contrib.auth import get_user_model
 from django.contrib.admin.sites import AdminSite
 from django.contrib.messages.storage.fallback import FallbackStorage
 
-from usersettings.admin import SettingsAdmin
+from usersettings.admin import SettingsAdmin, SelectSiteForm
 from usersettings.shortcuts import get_usersettings_model
 
 
@@ -110,6 +110,43 @@ class AdminTest(TestCase):
             self.model_opts.app_label, self.model_opts.module_name))
         resp = self.client.get(changelist_url)
         self.assertRedirects(resp, add_url)
+
+    def test_add_view_raises_403(self):
+        # we already have usersettings for all sites, so cant add anymore.
+        add_url = reverse('admin:%s_%s_add' % (self.model_opts.app_label,
+                                               self.model_opts.module_name))
+        resp = self.client.get(add_url)
+        self.assertEqual(resp.status_code, 403)
+
+    def test_add_view_shows_select_site_form(self):
+        # we crete lots of sites
+        self.create_sites()
+        # this should show te select site form
+        add_url = reverse('admin:%s_%s_add' % (self.model_opts.app_label,
+                                               self.model_opts.module_name))
+        resp = self.client.get(add_url)
+        self.assertIsInstance(resp.context['adminform'].form, SelectSiteForm)
+
+    def test_add_view_shows_select_site_if_given_site_id_does_not_exist(self):
+        # we crete lots of sites
+        self.create_sites()
+        # this should show te select site form
+        add_url = '%s?site_id=%s' % (
+            reverse('admin:%s_%s_add' % (self.model_opts.app_label,
+                                         self.model_opts.module_name)), 999)
+        resp = self.client.get(add_url)
+        self.assertIsInstance(resp.context['adminform'].form, SelectSiteForm)
+
+    def test_add_view_redirects_to_changeview_for_existing_usersettings(self):
+        add_url = '%s?site_id=%s' % (
+            reverse('admin:%s_%s_add' % (self.model_opts.app_label,
+                                         self.model_opts.module_name)),
+            settings.SITE_ID)
+        change_url = reverse('admin:%s_%s_change' % (
+            self.model_opts.app_label, self.model_opts.module_name), args=(self.obj.pk,))
+        resp = self.client.get(add_url)
+        self.assertRedirects(resp, change_url)
+
 
     def tearDown(self):
         self.client.logout()
