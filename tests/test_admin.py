@@ -72,25 +72,44 @@ class AdminTest(TestCase):
 
     def test_get_site_choices(self):
         self.create_sites()
-        # this should return a tuple. +1 as we also create a site during setUp
+        # this should return a tuple
         self.assertTrue(len(self.settings_admin.get_site_choices()) == len(self.test_sites) + 1)
 
-    # @override_settings(MIDDLEWARE_CLASSES=())
-    # def test_changelist_view(self):
-    #     change_url = reverse('admin:%s_%s_change' % (
-    #         self.model_opts.app_label, self.model_opts.module_name), args=(self.obj.pk,))
-    #     add_url = '%s?site_id=%s' % (
-    #         reverse('admin:%s_%s_add' % (self.model_opts.app_label, self.model_opts.module_name)),
-    #         settings.SITE_ID)
-    #
-    #     resp = self.settings_admin.changelist_view(self.request)
-    #     # we already created 1 usersettings required. so changeview should redirect to that
-    #     self.failUnlessEqual(resp.items()[1][1], change_url, 'Should redirect to change view')
-    #     # lets delete the existing usersettings model.
-    #     get_usersettings_model().objects.get(site_id=settings.SITE_ID).delete()
-    #     # now we should redirect to add view
-    #     resp = self.settings_admin.changelist_view(self.request)
-    #     self.failUnlessEqual(resp.items()[1][1], add_url, 'Should redirect to add view')
+    def test_changelist_view_redirects_automatically(self):
+        """
+        There is only 1 obj.. we should redirect to it, when trying to access changelist
+        """
+        change_url = reverse('admin:%s_%s_change' % (
+            self.model_opts.app_label, self.model_opts.module_name), args=(self.obj.pk,))
+        changelist_url = reverse('admin:%s_%s_changelist' % (
+            self.model_opts.app_label, self.model_opts.module_name))
+        resp = self.client.get(changelist_url)
+        self.assertRedirects(resp, change_url)
+
+    @override_settings(
+        MIDDLEWARE_CLASSES=(
+            'django.contrib.sessions.middleware.SessionMiddleware',
+            'django.contrib.auth.middleware.AuthenticationMiddleware',
+            'django.contrib.messages.middleware.MessageMiddleware',),
+        TEMPLATE_CONTEXT_PROCESSORS = (
+            'django.core.context_processors.request',
+        ),
+    )
+    def test_chagelist_view_redirects_to_add_view(self):
+        """
+        We have 1 site in database, we should redirect to add view,
+        """
+        # we delete the object created at setUp()
+        self.obj.delete()
+
+        add_url = '%s?site_id=%s' % (
+            reverse('admin:%s_%s_add' % (self.model_opts.app_label, self.model_opts.module_name)),
+            settings.SITE_ID)
+        # if we try to access the changelist, it should redirect to add view
+        changelist_url = reverse('admin:%s_%s_changelist' % (
+            self.model_opts.app_label, self.model_opts.module_name))
+        resp = self.client.get(changelist_url)
+        self.assertRedirects(resp, add_url)
 
     def tearDown(self):
         self.client.logout()

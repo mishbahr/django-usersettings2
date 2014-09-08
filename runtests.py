@@ -14,6 +14,7 @@ try:
         ROOT_URLCONF='example.urls',
         INSTALLED_APPS=[
             'django.contrib.auth',
+            'django.contrib.admin',
             'django.contrib.sessions',
             'django.contrib.contenttypes',
             'django.contrib.sites',
@@ -25,6 +26,11 @@ try:
         NOSE_ARGS=['-s'],
         USERSETTINGS_MODEL='example.SiteSettings',
         MIDDLEWARE_CLASSES=(
+            'django.contrib.sessions.middleware.SessionMiddleware',
+            'django.middleware.common.CommonMiddleware',
+            'django.middleware.csrf.CsrfViewMiddleware',
+            'django.contrib.auth.middleware.AuthenticationMiddleware',
+            'django.contrib.messages.middleware.MessageMiddleware',
             'usersettings.middleware.CurrentUserSettingsMiddleware',
         ),
         TEMPLATE_CONTEXT_PROCESSORS = (
