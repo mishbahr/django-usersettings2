@@ -146,6 +146,10 @@ But just like the Django sites framework, on the first request the current users
 
 If for any reason you want to force a database query, you can tell Django to clear the cache using ``UserSettings.objects.clear_cache()``::
 
+    from usersettings.shortcuts import get_usersettings_model
+    
+    UserSettings = get_usersettings_model()
+    
     # First call; current usersettings fetched from database.
     current_usersetting = UserSettings.objects.get_current()
 
