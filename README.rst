@@ -222,6 +222,13 @@ To enable the sites framework, follow these steps:
 3. Run migrate.
 
 
+DJANGO-CMS >= 3.0 Toolbar
+--------------------------
+
+`djangocms-usersettings2 <https://github.com/mishbahr/djangocms-usersettings2>`_ integrates ``django-usersettings2`` with `django-cms>=3.0 <https://github.com/divio/django-cms/>`_
+
+This allows a site editor to add/modify all usersettings in the frontend editing mode of django CMS and provide your users with a streamlined editing experience.
+
 
 Documentation
 -------------
