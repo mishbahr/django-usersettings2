@@ -198,6 +198,11 @@ The middleware sets the ``usersettings`` attribute on every request object, so y
         ...
     )
 
+7. Management command ``usersettings_init`` allow you to initialize records in
+``USERSETTINGS_MODEL`` for each your site::
+
+    ./manage.py usersettings_init
+
 
 Dependencies
 ------------
