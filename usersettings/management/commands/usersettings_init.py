@@ -9,19 +9,18 @@ from django.contrib.auth import get_user_model
 
 class Command(BaseCommand):
     help = 'Init config'
-    args = "[user_id]"
+    args = ""
 
-    def handle(self, user_id=None, **options):
-        user = get_user_model().objects.filter(is_superuser=True)
-        if user_id:
-            user = user.filter(id=user_id)
-        user = user.first()
+    def handle(self, **options):
+        user = get_user_model().objects.filter(is_superuser=True)[:1]
 
         if not user:
-            raise CommandError("Superuser not found")
+            raise CommandError('Superuser not found')
+
+        user = user.get()
 
         for site in Site.objects.all():
-            print "Processing site %s" % site
+            print('Processing site %s' % site)
 
             config, created = get_usersettings_model().objects.get_or_create(
                 site=site,
@@ -29,6 +28,6 @@ class Command(BaseCommand):
             )
 
             if not created:
-                print "Userconfig for site %s already exists" % Site.objects.get_current()
+                print('Userconfig for site %s already exists' % Site.objects.get_current())
 
-        print "Done"
+        print('Done')
