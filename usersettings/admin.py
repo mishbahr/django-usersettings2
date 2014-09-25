@@ -1,19 +1,18 @@
 # -*- coding: utf-8 -*-
 from django import forms
-from django.utils.translation import ugettext_lazy as _
-from django.utils.encoding import force_text
-from django.utils.safestring import mark_safe
-from django.core.urlresolvers import reverse
+from django.contrib import admin
+from django.contrib.admin.helpers import AdminErrorList, AdminForm
+from django.contrib.admin.widgets import AdminRadioSelect
+from django.contrib.auth.admin import csrf_protect_m
+from django.contrib.sites.models import Site
 from django.core.exceptions import PermissionDenied, ValidationError
+from django.core.urlresolvers import reverse
 from django.http import HttpResponseRedirect
 from django.shortcuts import render_to_response
 from django.template.context import RequestContext
-
-from django.contrib.auth.admin import csrf_protect_m
-from django.contrib import admin
-from django.contrib.admin.helpers import AdminForm, AdminErrorList
-from django.contrib.admin.widgets import AdminRadioSelect
-from django.contrib.sites.models import Site
+from django.utils.encoding import force_text
+from django.utils.safestring import mark_safe
+from django.utils.translation import ugettext_lazy as _
 
 
 class SelectSiteForm(forms.Form):
