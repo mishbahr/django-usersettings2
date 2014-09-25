@@ -26,5 +26,8 @@ def get_current_usersettings():
     the SITE_ID in the project's settings
     """
     USERSETTINGS_MODEL = get_usersettings_model()
-    current_usersettings = USERSETTINGS_MODEL.objects.get_current()
+    try:
+        current_usersettings = USERSETTINGS_MODEL.objects.get_current()
+    except USERSETTINGS_MODEL.DoesNotExist:
+        current_usersettings = None
     return current_usersettings
