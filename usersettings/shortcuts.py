@@ -6,7 +6,11 @@ def get_usersettings_model():
     """
     Returns the ``UserSettings`` model that is active in this project.
     """
-    from django.db.models import get_model
+    try:
+        from django.apps import apps
+        get_model = apps.get_model
+    except ImportError:
+        from django.db.models.loading import get_model
 
     try:
         app_label, model_name = settings.USERSETTINGS_MODEL.split('.')

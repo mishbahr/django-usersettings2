@@ -36,6 +36,15 @@ class AdminTest(TestCase):
         for site in self.test_sites:
             Site.objects.create(domain=site, name=site)
 
+    def get_model_info(self):
+        # module_name is renamed to model_name in Django 1.8
+        app_label = self.model_opts.app_label
+        try:
+            return app_label, self.model_opts.model_name
+        except AttributeError:
+            return app_label, self.model_opts.module_name
+
+
     def setUp(self):
         Site.objects.get_or_create(id=settings.SITE_ID, domain='example.com', name='example.com')
         self.obj = get_usersettings_model().objects.create(**self.usersettings_data)
@@ -79,10 +88,8 @@ class AdminTest(TestCase):
         """
         There is only 1 obj.. we should redirect to it, when trying to access changelist
         """
-        change_url = reverse('admin:%s_%s_change' % (
-            self.model_opts.app_label, self.model_opts.module_name), args=(self.obj.pk,))
-        changelist_url = reverse('admin:%s_%s_changelist' % (
-            self.model_opts.app_label, self.model_opts.module_name))
+        change_url = reverse('admin:%s_%s_change' % self.get_model_info(), args=(self.obj.pk,))
+        changelist_url = reverse('admin:%s_%s_changelist' % self.get_model_info())
         resp = self.client.get(changelist_url)
         self.assertRedirects(resp, change_url)
 
@@ -103,18 +110,16 @@ class AdminTest(TestCase):
         self.obj.delete()
 
         add_url = '%s?site_id=%s' % (
-            reverse('admin:%s_%s_add' % (self.model_opts.app_label, self.model_opts.module_name)),
+            reverse('admin:%s_%s_add' % self.get_model_info()),
             settings.SITE_ID)
         # if we try to access the changelist, it should redirect to add view
-        changelist_url = reverse('admin:%s_%s_changelist' % (
-            self.model_opts.app_label, self.model_opts.module_name))
+        changelist_url = reverse('admin:%s_%s_changelist' % self.get_model_info())
         resp = self.client.get(changelist_url)
         self.assertRedirects(resp, add_url)
 
     def test_add_view_raises_403(self):
         # we already have usersettings for all sites, so cant add anymore.
-        add_url = reverse('admin:%s_%s_add' % (self.model_opts.app_label,
-                                               self.model_opts.module_name))
+        add_url = reverse('admin:%s_%s_add' % self.get_model_info())
         resp = self.client.get(add_url)
         self.assertEqual(resp.status_code, 403)
 
@@ -122,8 +127,7 @@ class AdminTest(TestCase):
         # we crete lots of sites
         self.create_sites()
         # this should show te select site form
-        add_url = reverse('admin:%s_%s_add' % (self.model_opts.app_label,
-                                               self.model_opts.module_name))
+        add_url = reverse('admin:%s_%s_add' % self.get_model_info())
         resp = self.client.get(add_url)
         self.assertIsInstance(resp.context['adminform'].form, SelectSiteForm)
 
@@ -132,18 +136,15 @@ class AdminTest(TestCase):
         self.create_sites()
         # this should show te select site form
         add_url = '%s?site_id=%s' % (
-            reverse('admin:%s_%s_add' % (self.model_opts.app_label,
-                                         self.model_opts.module_name)), 999)
+            reverse('admin:%s_%s_add' % self.get_model_info()), 999)
         resp = self.client.get(add_url)
         self.assertIsInstance(resp.context['adminform'].form, SelectSiteForm)
 
     def test_add_view_redirects_to_changeview_for_existing_usersettings(self):
         add_url = '%s?site_id=%s' % (
-            reverse('admin:%s_%s_add' % (self.model_opts.app_label,
-                                         self.model_opts.module_name)),
+            reverse('admin:%s_%s_add' % self.get_model_info()),
             settings.SITE_ID)
-        change_url = reverse('admin:%s_%s_change' % (
-            self.model_opts.app_label, self.model_opts.module_name), args=(self.obj.pk,))
+        change_url = reverse('admin:%s_%s_change' % self.get_model_info(), args=(self.obj.pk,))
         resp = self.client.get(add_url)
         self.assertRedirects(resp, change_url)
 
