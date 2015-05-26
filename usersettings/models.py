@@ -47,6 +47,30 @@ class UserSettingsManager(models.Manager):
         USERSETTINGS_CACHE = {}
 
 
+@python_2_unicode_compatible
+class EmptyUserSetting(object):
+    """
+    This fake `UserSettings` objects will be returned by
+    the `get_current_usersettings()` if a `usersettings`
+    object `DoesNotExist` for the current site.
+    """
+
+    id = None
+    pk = None
+
+    def __init__(self):
+        pass
+
+    def __str__(self):
+        return 'User Setting not defined for current site'
+
+    def save(self, force_insert=False, force_update=False):
+        raise NotImplementedError('EmptyUserSettings cannot be saved.')
+
+    def delete(self):
+        raise NotImplementedError('EmptyUserSettings cannot be deleted.')
+
+
 class UserSettings(models.Model):
     site = models.OneToOneField(
         Site, editable=False, null=True, related_name='usersettings')
@@ -64,6 +88,12 @@ class UserSettings(models.Model):
 
     def __str__(self):
         return force_text(self.site)
+
+    def get_default(self):
+        """
+        Returns the default object for usersettings.
+        """
+        return EmptyUserSetting()
 
 
 def clear_usersettings_cache(sender, **kwargs):

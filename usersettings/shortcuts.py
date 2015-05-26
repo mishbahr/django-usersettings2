@@ -33,5 +33,5 @@ def get_current_usersettings():
     try:
         current_usersettings = USERSETTINGS_MODEL.objects.get_current()
     except USERSETTINGS_MODEL.DoesNotExist:
-        current_usersettings = None
+        current_usersettings = USERSETTINGS_MODEL.get_default()
     return current_usersettings
