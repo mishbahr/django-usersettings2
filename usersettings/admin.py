@@ -156,12 +156,12 @@ class SettingsAdmin(admin.ModelAdmin):
             try:
                 obj = self.model.objects.get(site=site)
                 change_url = reverse(
-                    'admin:%s_%s_change' % self.self.get_model_info(), args=(obj.pk,),
+                    'admin:%s_%s_change' % self.get_model_info(), args=(obj.pk,),
                     current_app=self.admin_site.name)
                 return HttpResponseRedirect(change_url)
             except self.model.DoesNotExist:
                 add_url = '%s?site_id=%s' % (
-                    reverse('admin:%s_%s_add' % self.self.get_model_info(),
+                    reverse('admin:%s_%s_add' % self.get_model_info(),
                             current_app=self.admin_site.name), site.pk)
                 return HttpResponseRedirect(add_url)
 
