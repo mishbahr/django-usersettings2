@@ -26,6 +26,14 @@ class SettingsAdmin(admin.ModelAdmin):
     select_site_form = SelectSiteForm
     select_site_form_template = 'admin/usersettings/select_site_form.html'
 
+    def get_model_info(self):
+        # module_name is renamed to model_name in Django 1.8
+        app_label = self.model._meta.app_label
+        try:
+            return app_label, self.model._meta.model_name
+        except AttributeError:
+            return app_label, self.model._meta.module_name
+
     def has_add_permission(self, request):
         sites = Site.objects.values_list('id', flat=True).order_by('id')
         settings = self.model.objects.values_list('site', flat=True).order_by('id')
@@ -57,8 +65,7 @@ class SettingsAdmin(admin.ModelAdmin):
                 try:
                     obj = self.model.objects.get(site=site)
                     change_url = reverse(
-                        'admin:%s_%s_change' %
-                        (self.opts.app_label, self.opts.module_name), args=(obj.pk,),
+                        'admin:%s_%s_change' % self.get_model_info(), args=(obj.pk,),
                         current_app=self.admin_site.name)
                     msg = _('{0} for "{1}" already exists. You may edit it below.')\
                         .format(self.opts.verbose_name, site.domain)
@@ -149,13 +156,12 @@ class SettingsAdmin(admin.ModelAdmin):
             try:
                 obj = self.model.objects.get(site=site)
                 change_url = reverse(
-                    'admin:%s_%s_change' %
-                    (self.opts.app_label, self.opts.module_name), args=(obj.pk,),
+                    'admin:%s_%s_change' % self.self.get_model_info(), args=(obj.pk,),
                     current_app=self.admin_site.name)
                 return HttpResponseRedirect(change_url)
             except self.model.DoesNotExist:
                 add_url = '%s?site_id=%s' % (
-                    reverse('admin:%s_%s_add' % (self.opts.app_label, self.opts.module_name),
+                    reverse('admin:%s_%s_add' % self.self.get_model_info(),
                             current_app=self.admin_site.name), site.pk)
                 return HttpResponseRedirect(add_url)
 
