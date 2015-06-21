@@ -89,6 +89,7 @@ class UserSettings(models.Model):
     def __str__(self):
         return force_text(self.site)
 
+    @classmethod
     def get_default(self):
         """
         Returns the default object for usersettings.
