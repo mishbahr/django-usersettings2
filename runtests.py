@@ -1,7 +1,43 @@
 import sys
 
 try:
-    from django.conf import settings
+    import django
+    from django.conf import settings, global_settings as default_settings
+
+    if django.VERSION >= (1, 10):
+        template_settings = dict(
+            TEMPLATES = [
+                {
+                    'BACKEND': 'django.template.backends.django.DjangoTemplates',
+                    'DIRS': (),
+                    'OPTIONS': {
+                        'autoescape': False,
+                        'loaders': (
+                            'django.template.loaders.filesystem.Loader',
+                            'django.template.loaders.app_directories.Loader',
+                        ),
+                        'context_processors': (
+                            'django.template.context_processors.debug',
+                            'django.template.context_processors.request',
+                            'django.contrib.auth.context_processors.auth',
+                            'django.contrib.messages.context_processors.messages',
+                            'usersettings.context_processors.usersettings',
+                        ),
+                    },
+                },
+            ]
+        )
+    else:
+        template_settings = dict(
+            TEMPLATE_LOADERS = (
+                'django.template.loaders.app_directories.Loader',
+                'django.template.loaders.filesystem.Loader',
+            ),
+            TEMPLATE_CONTEXT_PROCESSORS = list(default_settings.TEMPLATE_CONTEXT_PROCESSORS) + [
+                'django.core.context_processors.request',
+                'usersettings.context_processors.usersettings',
+            ],
+        )
 
     settings.configure(
         DEBUG=True,
@@ -33,10 +69,7 @@ try:
             'django.contrib.messages.middleware.MessageMiddleware',
             'usersettings.middleware.CurrentUserSettingsMiddleware',
         ),
-        TEMPLATE_CONTEXT_PROCESSORS = (
-            'django.core.context_processors.request',
-            'usersettings.context_processors.usersettings',
-        )
+        **template_settings
     )
 
     try:
