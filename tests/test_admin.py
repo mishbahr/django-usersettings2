@@ -98,9 +98,6 @@ class AdminTest(TestCase):
             'django.contrib.sessions.middleware.SessionMiddleware',
             'django.contrib.auth.middleware.AuthenticationMiddleware',
             'django.contrib.messages.middleware.MessageMiddleware',),
-        TEMPLATE_CONTEXT_PROCESSORS = (
-            'django.core.context_processors.request',
-        ),
     )
     def test_chagelist_view_redirects_to_add_view(self):
         """
