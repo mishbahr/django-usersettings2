@@ -9,10 +9,6 @@ django-usersettings2
     :target: https://pypi.python.org/pypi/django-usersettings2/
     :alt: Latest Version
 
-.. image:: http://img.shields.io/pypi/dm/django-usersettings2.svg?style=flat-square
-    :target: https://pypi.python.org/pypi/django-usersettings2/
-    :alt: Downloads
-
 .. image:: http://img.shields.io/pypi/l/django-usersettings2.svg?style=flat-square
     :target: https://pypi.python.org/pypi/django-usersettings2/
     :alt: License
@@ -51,7 +47,9 @@ To get started, create a class that inherits from ``usersettings.models.UserSett
 
 Since ``UserSettings`` model inherit from ``django.db.models.Model``, you are free to add any field you want.
 
-Here's a simple example::
+Here's a simple example:
+
+.. code-block:: python
 
     from django.db import models
     from django.utils.translation import ugettext_lazy as _
@@ -75,7 +73,9 @@ The only difference to normal models is that you subclass ``usersettings.models.
 Hooking the 'usersettings' to the admin site
 --------------------------------------------
 
-To make your new model editable in the admin interface, you must first create an admin class that subclasses ``usersettings.admin.SettingsAdmin``. Continuing with the example model above, here’s a simple corresponding ``SiteSettingsAdmin`` class::
+To make your new model editable in the admin interface, you must first create an admin class that subclasses ``usersettings.admin.SettingsAdmin``. Continuing with the example model above, here’s a simple corresponding ``SiteSettingsAdmin`` class:
+
+.. code-block:: python
 
     from django.contrib import admin
     from django.utils.translation import ugettext_lazy as _
@@ -111,7 +111,9 @@ Hooking into the current usersettings from views
 
 You can use the ``usersettings`` in your Django views to do particular things based on the ``usersettings`` for the site.
 
-Here’s an example of what the a view looks like::
+Here’s an example of what the a view looks like:
+
+.. code-block:: python
 
     from usersettings.shortcuts import get_current_usersettings
 
@@ -130,9 +132,11 @@ Custom Middleware
 -----------------
 
 To avoid the repetitions of having to import ``current_usersetting`` for every view. Add ``usersettings.middleware.CurrentUserSettingsMiddleware`` to ``MIDDLEWARE_CLASSES``
-The middleware sets the ``usersettings`` attribute on every request object, so you can use ``request.usersettings`` to get the current usersettings::
+The middleware sets the ``usersettings`` attribute on every request object, so you can use ``request.usersettings`` to get the current usersettings:
 
-    MIDDLEWARE_CLASSES=(
+.. code-block:: python
+
+    MIDDLEWARE_CLASSES = (
         ...
         'usersettings.middleware.CurrentUserSettingsMiddleware',
         ...
@@ -144,7 +148,9 @@ As the ``usersettings`` are stored in the database, each call to ``UserSettings.
 
 But just like the Django sites framework, on the first request the current usersettings is cached, and any subsequent call returns the cached data instead of hitting the database.
 
-If for any reason you want to force a database query, you can tell Django to clear the cache using ``UserSettings.objects.clear_cache()``::
+If for any reason you want to force a database query, you can tell Django to clear the cache using ``UserSettings.objects.clear_cache()``:
+
+.. code-block:: python
 
     from usersettings.shortcuts import get_usersettings_model
     
@@ -163,61 +169,74 @@ If for any reason you want to force a database query, you can tell Django to cle
 Install
 -------
 
-1. Install ``django-usersettings``::
+1. Install ``django-usersettings``:
 
-    pip install django-usersettings2
+   .. code-block:: bash
 
-2. Add ``usersettings`` to ``INSTALLED_APPS``::
+        pip install django-usersettings2
 
-    INSTALLED_APPS = (
-        ...
-        'usersettings',
-        ...
-    )
+2. Add ``usersettings`` to ``INSTALLED_APPS``:
 
-4. Specify the custom ``UserSettings`` model as the default usersettings model for your project using the ``USERSETTINGS_MODEL`` setting in your settings.py (required)::
+   .. code-block:: python
 
-    USERSETTINGS_MODEL='config.SiteSettings'
+        INSTALLED_APPS = (
+            ...
+            'usersettings',
+            ...
+        )
 
-5. Add ``usersettings.middleware.CurrentUserSettingsMiddleware`` to ``MIDDLEWARE_CLASSES`` (optional).
+3. Specify the custom ``UserSettings`` model as the default usersettings model for your project using the ``USERSETTINGS_MODEL`` setting in your settings.py (required):
 
-The middleware sets the ``usersettings`` attribute on every request object, so you can use ``request.usersettings`` to get the current usersettings::
+   .. code-block:: python
 
-    MIDDLEWARE_CLASSES=(
-        ...
-        'usersettings.middleware.CurrentUserSettingsMiddleware',
-        ...
-    )
+        USERSETTINGS_MODEL = 'config.SiteSettings'
 
-6. The current usersettings are made available in the template context when your
-``TEMPLATE_CONTEXT_PROCESSORS`` setting contains ``usersettings.context_processors.usersettings``::
+4. Add ``usersettings.middleware.CurrentUserSettingsMiddleware`` to ``MIDDLEWARE_CLASSES`` (optional).
 
-    TEMPLATE_CONTEXT_PROCESSORS = (
-        ...
-        'usersettings.context_processors.usersettings',
-        ...
-    )
+   The middleware sets the ``usersettings`` attribute on every request object, so you can use ``request.usersettings`` to get the current usersettings:
+
+   .. code-block:: python
+
+        MIDDLEWARE_CLASSES = (
+            ...
+            'usersettings.middleware.CurrentUserSettingsMiddleware',
+            ...
+        )
+
+5. The current usersettings are made available in the template context when your ``TEMPLATE_CONTEXT_PROCESSORS`` setting contains ``usersettings.context_processors.usersettings``:
+
+   .. code-block:: python
+
+        TEMPLATE_CONTEXT_PROCESSORS = (
+            ...
+            'usersettings.context_processors.usersettings',
+            ...
+        )
 
 
 Dependencies
 ------------
 
-django-usersettings2 requires The `“sites” <https://docs.djangoproject.com/en/dev/ref/contrib/sites/>`_
+django-usersettings2 requires The `sites <https://docs.djangoproject.com/en/dev/ref/contrib/sites/>`_
 framework to be installed.
 
 To enable the sites framework, follow these steps:
 
-1. Add `django.contrib.sites` to your ``INSTALLED_APPS`` setting::
+1. Add `django.contrib.sites` to your ``INSTALLED_APPS`` setting:
 
-    INSTALLED_APPS = (
-        ...
-        'django.contrib.sites'
-        ...
-    )
+   .. code-block:: python
 
-2. Define a ``SITE_ID`` setting::
+        INSTALLED_APPS = (
+            ...
+            'django.contrib.sites'
+            ...
+        )
 
-    SITE_ID = 1
+2. Define a ``SITE_ID`` setting:
+
+   .. code-block:: python
+
+        SITE_ID = 1
 
 3. Run migrate.
 
