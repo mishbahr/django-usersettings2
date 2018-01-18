@@ -2,6 +2,8 @@
 django-usersettings2
 =============================
 
+A reusable app for django, provides the ability to configure site settings via the admin interface, rather than by editing settings.py
+
 .. image:: http://img.shields.io/travis/mishbahr/django-usersettings2.svg?style=flat-square
     :target: https://travis-ci.org/mishbahr/django-usersettings2/
 
@@ -15,9 +17,6 @@ django-usersettings2
 
 .. image:: http://img.shields.io/coveralls/mishbahr/django-usersettings2.svg?style=flat-square
   :target: https://coveralls.io/r/mishbahr/django-usersettings2?branch=master
-
-
-A reusable app for django, provides the ability to configure site settings via the admin interface, rather than by editing settings.py
 
 
 Why would you use usersettings?
