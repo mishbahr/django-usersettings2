@@ -118,7 +118,7 @@ class SettingsAdmin(admin.ModelAdmin):
         context = {
             'title': _('Add %s') % force_text(self.opts.verbose_name),
             'adminform': adminForm,
-            'is_popup': '_popup' in request.REQUEST,
+            'is_popup': '_popup' in request.GET,
             'media': mark_safe(media),
             'errors': AdminErrorList(form, ()),
             'app_label': self.opts.app_label,
