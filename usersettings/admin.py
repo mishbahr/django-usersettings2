@@ -9,7 +9,6 @@ from django.core.exceptions import PermissionDenied, ValidationError
 from django.core.urlresolvers import reverse
 from django.http import HttpResponseRedirect
 from django.shortcuts import render_to_response
-from django.template.context import RequestContext
 from django.utils.encoding import force_text
 from django.utils.safestring import mark_safe
 from django.utils.translation import ugettext_lazy as _
@@ -139,14 +138,12 @@ class SettingsAdmin(admin.ModelAdmin):
             'save_on_top': self.save_on_top,
         })
 
-        context_instance = RequestContext(request, current_app=self.admin_site.name)
-
         return render_to_response(self.select_site_form_template or [
             'admin/%s/%s/select_site_form.html' % (app_label, self.opts.object_name.lower()),
             'admin/%s/select_site_form.html' % app_label,
             'admin/usersettings/select_site_form.html',  # added default here
             'admin/select_site_form.html'
-        ], context, context_instance=context_instance)
+        ], context)
 
     @csrf_protect_m
     def changelist_view(self, request, extra_context=None):
