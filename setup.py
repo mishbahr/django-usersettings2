@@ -3,7 +3,7 @@
 
 import os
 import sys
-
+import codecs
 import usersettings
 
 try:
@@ -20,8 +20,8 @@ if sys.argv[-1] == 'publish':
     print("  git push --tags")
     sys.exit()
 
-readme = open('README.rst').read()
-history = open('HISTORY.rst').read().replace('.. :changelog:', '')
+readme = codecs.open('README.rst').read()
+history = codecs.open('HISTORY.rst').read().replace('.. :changelog:', '')
 
 setup(
     name='django-usersettings2',
